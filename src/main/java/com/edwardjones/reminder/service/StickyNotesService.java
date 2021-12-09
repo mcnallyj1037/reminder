@@ -1,12 +1,15 @@
 package com.edwardjones.reminder.service;
 
 
-import com.edwardjones.reminder.dao.StickyNoteDao;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.edwardjones.reminder.dao.StickyNoteDao;
+import com.edwardjones.reminder.domain.StickyNote;
 
 @Component
 public class StickyNotesService {
@@ -21,7 +24,8 @@ public class StickyNotesService {
 		log.info("Service: Inserted stickyNoteRecord."+stickyNoteRecord);
 	}
 
-	public void retrieveStickyNote() {
+	public List<StickyNote> retrieveStickyNote(String uniqueKey) {
+		return stickyNoteDao.retrieveStickyNotesByUniqueKey(uniqueKey);
 	}
 
     public void deleteStickyNote(String stickyNoteId) {
