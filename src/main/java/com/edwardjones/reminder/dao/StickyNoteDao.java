@@ -31,6 +31,8 @@ public class StickyNoteDao {
 	
 	private static final String selectStickyNotesByUniqueKey = "SELECT id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED FROM stickynotes_db.sticky_notes WHERE UNIQUE_KEY = ? ";
 	
+	private static final String selectStickyNoteMaxId = "SELECT MAX(id) FROM stickynotes_db.sticky_notes";
+	
 	
 	 public List<StickyNote> retrieveAllStickyNotes() {
 	    	List<StickyNote> stickyNoteList = null;
@@ -46,12 +48,19 @@ public class StickyNoteDao {
 	
 	
 	@Transactional
-	public int insertStickyNote(int id, String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email, java.sql.Timestamp dateCreated) {
+	public int insertStickyNote(String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email) {
 		log.info("Entered insertStickyNote() StickyNoteDao.");
 		int result = 0;
+		int id = 0;
 		try {
-			
-			result = this.jdbcTemplate.update(insertIntoSticky);
+			//
+			int selectStickyNoteMax =  this.jdbcTemplate.queryForObject(selectStickyNoteMaxId, Integer.class);
+			if (selectStickyNoteMax>0){
+			id = selectStickyNoteMax+1;
+			} else{
+				id=1;
+			}
+			result = this.jdbcTemplate.update(insertIntoSticky,id,uniqueKey, title, description, reminderDate, phone, email, new java.sql.Timestamp(new java.util.Date().getTime()));
 			
 			log.info("Successfully saved stickyNotes details.");
 				    
