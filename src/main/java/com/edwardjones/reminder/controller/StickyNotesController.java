@@ -1,7 +1,5 @@
 package com.edwardjones.reminder.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.edwardjones.reminder.service.StickyNotesService;
 
 @RestController
@@ -25,16 +22,16 @@ public class StickyNotesController {
 	 * @param session
 	 */
 	@PutMapping("/stickynote/create")
-	public void createStickyNote() {
-		stickyNotesService.createStickyNote();
+	public void createStickyNote(int id, String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email, java.sql.Timestamp dateCreated) {
+		stickyNotesService.createStickyNote(id, uniqueKey,title,description, reminderDate, phone, email, dateCreated);
 	}
 	@GetMapping("/stickynote/retrieve")
 	public void retrieveStickyNote() {
 		stickyNotesService.retrieveStickyNote();
 	}
 	@DeleteMapping("/stickynote/delete")
-	public void deleteStickyNote() {
-		stickyNotesService.deleteStickyNote();
+	public void deleteStickyNote(String stickyNoteId) {
+		stickyNotesService.deleteStickyNote(stickyNoteId);
 	}
 	
 }
