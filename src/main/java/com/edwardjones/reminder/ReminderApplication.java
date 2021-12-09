@@ -14,6 +14,10 @@ public class ReminderApplication {
 		SpringApplication.run(ReminderApplication.class, args);
 	}
 	
+	/**
+	 * App Startup Bean
+	 * @return
+	 */
 	@Bean(initMethod="init")
 	public AppStartupBean appStartupBean() {
 	    return new AppStartupBean();

@@ -23,6 +23,10 @@ public class ReminderPollingService {
 	@Autowired
 	ReminderPollingDao reminderPollingDao;
 	
+	/**
+	 * Run infinite loop where the STICKY_NOTE table will be polled once every 60 seconds / 1 minute for processing.
+	 * @throws InterruptedException
+	 */
     public void pollStickyNoteTableForReminders() throws InterruptedException {
     	log.info("Inside pollReminderStaging() in ReminderPollingService.  Polling STICKY_NOTES table ever 1 minute.");
         boolean smsResult = false;
@@ -59,9 +63,6 @@ public class ReminderPollingService {
          		}
          	}
     	}
-    	
-
-    	
 	}
     
     

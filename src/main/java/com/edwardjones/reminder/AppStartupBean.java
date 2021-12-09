@@ -13,6 +13,9 @@ public class AppStartupBean {
 	@Autowired
 	ReminderPollingService reminderPollingService;
 	
+	/**
+	 * Method will run on app startup.
+	 */
 	public void init() {
         log.info("Application started.  Initializing...");
         try {
