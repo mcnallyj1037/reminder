@@ -1,12 +1,15 @@
 package com.edwardjones.reminder.service;
 
 
-import com.edwardjones.reminder.dao.StickyNoteDao;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.edwardjones.reminder.dao.StickyNoteDao;
+import com.edwardjones.reminder.domain.StickyNote;
 
 @Component
 public class StickyNotesService {
@@ -18,7 +21,7 @@ public class StickyNotesService {
 
 	public void createStickyNote(String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email) {
 		// TODO we need to generate the id query max id and add 1 to get new ID
-		Integer stickyNoteRecord = stickyNoteDao.insertStickyNote(id, uniqueKey,title,description, reminderDate, phone, email);
+		Integer stickyNoteRecord = stickyNoteDao.insertStickyNote(uniqueKey,title,description, reminderDate, phone, email);
 		log.info("Service: Inserted stickyNoteRecord."+stickyNoteRecord);
 	}
 
