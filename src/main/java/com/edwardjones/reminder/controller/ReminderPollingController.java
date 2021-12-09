@@ -24,6 +24,7 @@ public class ReminderPollingController {
 	 */
 	@GetMapping("/poll-reminders")
 	public void pollReminders(HttpSession session) {
+		log.info("Inside pollReminders() controller.");
 		reminderPollingService.pollReminderStaging();
 	}
 	
