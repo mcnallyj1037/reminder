@@ -27,6 +27,8 @@ public class ReminderPollingDao {
 	
 	private static final String selectStickyNotes = "SELECT id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED FROM stickynotes_db.sticky_notes";
 	
+	private static final String selectStickyNotesByUniqueKey = selectStickyNotes + " WHERE UNIQUE_KEY = ? ";
+	
 	
 	 public List<StickyNote> retrieveAllStickyNotes() {
 	    	List<StickyNote> stickyNoteList = null;
@@ -38,6 +40,18 @@ public class ReminderPollingDao {
 	    		log.info(e.getLocalizedMessage());
 	    	}
 	    	return stickyNoteList;
+	}
+	 
+	public List<StickyNote> retrieveStickyNotes(String uniqueKey) {
+		List<StickyNote> stickyNotes = null;
+			try {
+				stickyNotes = this.jdbcTemplate.query(selectStickyNotesByUniqueKey, new StickyNoteMapper(), uniqueKey);
+				log.info("Successfully retrieved StickyNotes from sticky_notes table. " + stickyNotes.size() + " for uniqueKey: " + uniqueKey);
+	    	}
+			catch(Exception e) {
+				log.info(e.getLocalizedMessage());
+			}
+			return stickyNotes;
 	}
 	
 	/*
