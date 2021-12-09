@@ -3,9 +3,8 @@ package com.edwardjones.reminder.controller;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +17,6 @@ import com.edwardjones.reminder.service.StickyNotesService;
 
 @RestController
 public class StickyNotesController {
-
-	private static Log log = LogFactory.getLog(ReminderPollingController.class);
 	
 	@Autowired
 	StickyNotesService stickyNotesService;
@@ -69,7 +66,10 @@ public class StickyNotesController {
 		stickyNotesService.createStickyNote(uniqueKey,title,description, reminderDate, phone, email);
 	}
 
-	@GetMapping("/stickynote/retrieve/{uniqueKey}")
+	@GetMapping(
+		path = "/stickynote/retrieve/{uniqueKey}",
+		produces = MediaType.APPLICATION_JSON_VALUE
+	)
 	public List<StickyNote> retrieveStickyNote(
 				@PathVariable(
 					value = "uniqueKey",
