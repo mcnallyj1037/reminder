@@ -1,3 +1,3 @@
 # reminder
-Reminder polling API with SMS capabilities 
-test  
+Reminder polling API with SMS capabilities    
+          
