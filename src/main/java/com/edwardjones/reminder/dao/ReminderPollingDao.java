@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.edwardjones.reminder.domain.StickyNote;
 import com.edwardjones.reminder.domain.StickyNoteMapper;
-import com.edwardjones.reminder.exception.ReminderException;
 
 @Component
 public class ReminderPollingDao {
@@ -42,7 +41,7 @@ public class ReminderPollingDao {
 	 * @throws ReminderException 
 	 */
 	@Transactional
-	public List<StickyNote> retrieveAllStickyNotes(java.sql.Timestamp date) throws ReminderException {
+	public List<StickyNote> retrieveAllStickyNotes(java.sql.Timestamp date) {
 		log.info("Entered retrieveAllStickyNotes() in ReminderPollingDao.");
 	    List<StickyNote> stickyNoteList = null;
 	    try {
@@ -62,7 +61,7 @@ public class ReminderPollingDao {
 	 * @throws ReminderException 
 	 */
 	@Transactional
-	public int updateReminderToBeEmpty(String uniqueKey) throws ReminderException {
+	public int updateReminderToBeEmpty(String uniqueKey) {
 		log.info("Entered updateReminderToBeEmpty() in ReminderPollingDao.");
 		int result = 0;
     	try {
