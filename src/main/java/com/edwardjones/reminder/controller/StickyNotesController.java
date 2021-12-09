@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edwardjones.reminder.domain.StickyNote;
@@ -28,9 +29,46 @@ public class StickyNotesController {
 	 * @param session
 	 */
 	@PutMapping("/stickynote/create")
-	public void createStickyNote(int id, String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email, java.sql.Timestamp dateCreated) {
-		stickyNotesService.createStickyNote(id, uniqueKey,title,description, reminderDate, phone, email, dateCreated);
+	public void createStickyNote(
+				@RequestParam(
+					value = "uniqueKey",
+					required = true
+				)
+				String uniqueKey,
+				
+				@RequestParam(
+					value = "title",
+					required = false
+				)
+				String title,
+				
+				@RequestParam(
+					value = "description",
+					required = false
+				)
+				String description,
+				
+				@RequestParam(
+					value = "reminderDate",
+					required = false
+				)
+				java.sql.Timestamp reminderDate,
+				
+				@RequestParam(
+					value = "phone",
+					required = false
+				)
+				String phone, 
+				
+				@RequestParam(
+					value = "email",
+					required = false
+				)
+				String email
+			){
+		stickyNotesService.createStickyNote(uniqueKey,title,description, reminderDate, phone, email);
 	}
+
 	@GetMapping("/stickynote/retrieve/{uniqueKey}")
 	public List<StickyNote> retrieveStickyNote(
 				@PathVariable(
@@ -41,8 +79,15 @@ public class StickyNotesController {
 			) {
 		return stickyNotesService.retrieveStickyNote(uniqueKey);
 	}
-	@DeleteMapping("/stickynote/delete")
-	public void deleteStickyNote(String stickyNoteId) {
+
+	@DeleteMapping("/stickynote/delete/{stickyNoteId}")
+	public void deleteStickyNote(
+				@PathVariable(
+					value = "stickyNoteId",
+					required = true
+				)
+				String stickyNoteId
+			) {
 		stickyNotesService.deleteStickyNote(stickyNoteId);
 	}
 	
