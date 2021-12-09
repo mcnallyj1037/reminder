@@ -18,6 +18,10 @@ public class ReminderPollingController {
 	@Autowired
 	ReminderPollingService reminderPollingService;
 	
+	/**
+	 * Polling controller to poll Mongo DB Reminder staging table and process SMS messaging for reminder funcationality.
+	 * @param session
+	 */
 	@GetMapping("/poll-reminders")
 	public void pollReminders(HttpSession session) {
 		reminderPollingService.pollReminderStaging();
