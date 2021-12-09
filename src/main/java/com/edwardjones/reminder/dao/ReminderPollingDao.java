@@ -35,10 +35,10 @@ public class ReminderPollingDao {
 			                                                     + "SET REMINDER_DATE = '0000-00-00 00:00:00' "
 			                                                     + "WHERE UNIQUE_KEY = ?";
 	
+	
 	/**
 	 * Retrieve all sticky notes and return a list of StickyNote objects where reminder date is set and is less than current date/time.
 	 * @return
-	 * @throws ReminderException 
 	 */
 	@Transactional
 	public List<StickyNote> retrieveAllStickyNotes(java.sql.Timestamp date) {
@@ -58,7 +58,6 @@ public class ReminderPollingDao {
 	 * Make the date/time field for "Reminder" in the STICKY_NOTES table empty.
 	 * @param uniqueKey
 	 * @return
-	 * @throws ReminderException 
 	 */
 	@Transactional
 	public int updateReminderToBeEmpty(String uniqueKey) {
