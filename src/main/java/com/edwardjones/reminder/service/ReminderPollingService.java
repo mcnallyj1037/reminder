@@ -37,22 +37,26 @@ public class ReminderPollingService {
                 	List<StickyNote> stickyNoteList = reminderPollingDao.retrieveAllStickyNotes(new java.sql.Timestamp(new java.util.Date().getTime()));
                 	log.info("Total number of reminders needing to be sent: " + stickyNoteList.size());
                 	for(int i = 0; i < stickyNoteList.size(); i++) {
-                		if(!StringUtils.isEmpty(stickyNoteList.get(i).getPhone())) {
-                			if(stickyNoteList.get(i).getPhone().startsWith("1")) {
-                    			smsResult = textMessagingService.sendTextMessage("+" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
+                		try {
+                		    if(!StringUtils.isEmpty(stickyNoteList.get(i).getPhone())) {
+                			    if(stickyNoteList.get(i).getPhone().startsWith("1")) {
+                    			    smsResult = textMessagingService.sendTextMessage("+" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
                     			
-                    		}else {
-                    			smsResult = textMessagingService.sendTextMessage("+1" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
-                    		}
-                			log.info("SMS has been sent: " + stickyNoteList.size());
+                    		    }else {
+                    			    smsResult = textMessagingService.sendTextMessage("+1" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
+                    		    }
+                			    log.info("SMS has been sent: " + stickyNoteList.size());
                 			
-                		}else if(!StringUtils.isEmpty(stickyNoteList.get(i).getEmail())){
-                			log.info("Sending email to: " + stickyNoteList.get(i).getEmail());
-                			smsResult = true;
-                		}
+                		    }else if(!StringUtils.isEmpty(stickyNoteList.get(i).getEmail())){
+                			    log.info("Sending email to: " + stickyNoteList.get(i).getEmail());
+                			    smsResult = true;
+                		    }
                 		
-                		if(smsResult) {
-                			reminderPollingDao.updateReminderToBeEmpty(stickyNoteList.get(i).getUniqueKey());
+                		    if(smsResult) {
+                			    reminderPollingDao.updateReminderToBeEmpty(stickyNoteList.get(i).getUniqueKey());
+                		    }
+                		}catch(Exception e) {
+                			log.info(e.getLocalizedMessage());
                 		}
                 	}
                    
@@ -65,9 +69,9 @@ public class ReminderPollingService {
         timer.schedule(task, 0, 10000);// Run task every 5 second
         try {
             Thread.sleep(60000); // Cancel task after 1 minute.
+            
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new ReminderException(e.getLocalizedMessage());
+            log.info(e.getLocalizedMessage());
         }
         timer.cancel();	
 	}

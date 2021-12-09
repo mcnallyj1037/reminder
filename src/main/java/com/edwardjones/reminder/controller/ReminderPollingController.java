@@ -20,7 +20,7 @@ public class ReminderPollingController {
 	ReminderPollingService reminderPollingService;
 	
 	/**
-	 * Polling controller to poll Mongo DB Reminder staging table and process SMS messaging for reminder funcationality.
+	 * Polling controller to poll Mongo DB Reminder staging table and process SMS messaging for reminder functionality.
 	 * @param session
 	 */
 	@GetMapping("/poll-reminders")
@@ -29,9 +29,12 @@ public class ReminderPollingController {
 		try {
 			reminderPollingService.pollReminderStaging();
 			
-		} catch (ReminderException re) {
+		}catch (ReminderException re) {
 			re.printStackTrace();
 			log.info(re.getLocalizedMessage());
+			
+		}catch(Exception e) {
+			log.info(e.getLocalizedMessage());
 		}
 	}
 	

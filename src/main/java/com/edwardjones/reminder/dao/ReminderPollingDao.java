@@ -51,7 +51,6 @@ public class ReminderPollingDao {
 	    		
 	    }catch(Exception e) {
 	    	log.info(e.getLocalizedMessage());
-	    	throw new ReminderException(e.getLocalizedMessage());
 	    }
 	    return stickyNoteList;
 	}
@@ -76,7 +75,6 @@ public class ReminderPollingDao {
     		
     	}catch(Exception e) {
     		log.info(e.getLocalizedMessage());
-    		throw new ReminderException(e.getLocalizedMessage());
     	}
     	return result;
 	}
