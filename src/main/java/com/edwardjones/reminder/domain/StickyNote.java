@@ -13,7 +13,7 @@ public class StickyNote {
 	
 	public StickyNote() {}
 	
-	public StickyNote(int id, String uniqueKey, String description, String reminderDate, String phone, String email,
+	public StickyNote(int id, String uniqueKey,String title, String description, String reminderDate, String phone, String email,
 			String dateCreated) {
 		super();
 		this.id = id;
