@@ -23,6 +23,9 @@ public class AppStartupBean {
 			
 		} catch (InterruptedException e) {
 			log.info(e.getLocalizedMessage());
+			
+		} catch(Exception e) {
+			log.info(e.getLocalizedMessage());
 		}
     }
 }
