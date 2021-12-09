@@ -29,6 +29,8 @@ public class StickyNoteDao {
 	
 	private static final String deleteStickyNotes = "DELETE FROM stickynotes_db.sticky_notes WHERE ID = ?" ;
 	
+	private static final String selectStickyNotesByUniqueKey = "SELECT id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED FROM stickynotes_db.sticky_notes WHERE UNIQUE_KEY = ? ";
+	
 	
 	 public List<StickyNote> retrieveAllStickyNotes() {
 	    	List<StickyNote> stickyNoteList = null;
@@ -73,6 +75,18 @@ public class StickyNoteDao {
     	    log.info(e.getLocalizedMessage());
     	}   	    
 	    return result;
+	}
+	
+	public List<StickyNote> retrieveStickyNotesByUniqueKey(String uniqueKey) {
+		List<StickyNote> stickyNotes = null;
+			try {
+				stickyNotes = this.jdbcTemplate.query(selectStickyNotesByUniqueKey, new StickyNoteMapper(), uniqueKey);
+				log.info("Successfully retrieved StickyNotes from sticky_notes table. " + stickyNotes.size() + " for uniqueKey: " + uniqueKey);
+	    	}
+			catch(Exception e) {
+				log.info(e.getLocalizedMessage());
+			}
+			return stickyNotes;
 	}
 
 }
