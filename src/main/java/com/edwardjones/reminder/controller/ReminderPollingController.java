@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edwardjones.reminder.exception.ReminderException;
 import com.edwardjones.reminder.service.ReminderPollingService;
 
 @RestController
@@ -25,7 +26,13 @@ public class ReminderPollingController {
 	@GetMapping("/poll-reminders")
 	public void pollReminders(HttpSession session) {
 		log.info("Inside pollReminders() controller.");
-		reminderPollingService.pollReminderStaging();
+		try {
+			reminderPollingService.pollReminderStaging();
+			
+		} catch (ReminderException re) {
+			re.printStackTrace();
+			log.info(re.getLocalizedMessage());
+		}
 	}
 	
 }
