@@ -1,6 +1,7 @@
 package com.edwardjones.reminder.service;
 
 
+import java.time.Instant;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -19,7 +20,10 @@ public class StickyNotesService {
 	@Autowired
 	StickyNoteDao stickyNoteDao;
 
-	public void createStickyNote(int id, String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email, java.sql.Timestamp dateCreated) {
+	public void createStickyNote(String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email) {
+		// TODO we need to generate the id query max id and add 1 to get new ID
+		int id = 0;
+		java.sql.Timestamp dateCreated = java.sql.Timestamp.from(Instant.now());
 		Integer stickyNoteRecord = stickyNoteDao.insertStickyNote(id, uniqueKey,title,description, reminderDate, phone, email, dateCreated);
 		log.info("Service: Inserted stickyNoteRecord."+stickyNoteRecord);
 	}
