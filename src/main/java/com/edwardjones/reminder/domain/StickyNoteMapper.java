@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class StickyNoteMapper implements RowMapper<StickyNote> {
 
-	//id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED
     @Override
     public StickyNote mapRow(ResultSet rs, int rowNum) throws SQLException {
     	StickyNote stickyNote = new StickyNote();

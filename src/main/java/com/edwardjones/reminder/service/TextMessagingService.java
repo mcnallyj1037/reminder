@@ -32,6 +32,7 @@ public class TextMessagingService {
 	public boolean sendTextMessage(String toPhoneNumber, String textMessage){
 		boolean isProcessedSuccessfully = false;
 		log.info("SID: " + twilioAcctSid + ", AUTH TOKEN: " + twilioAcctAuthToken);
+		log.info("Texing Phone: " + toPhoneNumber + ", the message: " + textMessage);
 
 		//Twilio - Send Message
 		Twilio.init(twilioAcctSid, twilioAcctAuthToken);

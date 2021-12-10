@@ -33,7 +33,10 @@ public class StickyNoteDao {
 	
 	private static final String selectStickyNoteMaxId = "SELECT MAX(id) FROM stickynotes_db.sticky_notes";
 	
-	
+	/**
+	 * Retrieve a list of all sticky notes from the STICKY_NOTES table.
+	 * @return
+	 */
 	 public List<StickyNote> retrieveAllStickyNotes() {
 	    	List<StickyNote> stickyNoteList = null;
 	    	try {
@@ -46,7 +49,16 @@ public class StickyNoteDao {
 	    	return stickyNoteList;
 	}
 	
-	
+	/**
+	 * Insert a single Sticky Note record to the STICKY_NOTES table.
+	 * @param uniqueKey
+	 * @param title
+	 * @param description
+	 * @param reminderDate
+	 * @param phone
+	 * @param email
+	 * @return
+	 */
 	@Transactional
 	public int insertStickyNote(String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email) {
 		log.info("Entered insertStickyNote() StickyNoteDao.");
@@ -70,6 +82,11 @@ public class StickyNoteDao {
 	    return result;
 	}
 
+	/**
+	 * Delete a single sticky note from STICKY_NOTE table using a unique id for the sticky note which is passed into this method.
+	 * @param stickyNoteId
+	 * @return
+	 */
 	@Transactional
 	public int deleteStickyNote(String stickyNoteId) {
 		log.info("Entered deleteStickyNote() StickyNoteDao.");
@@ -86,6 +103,11 @@ public class StickyNoteDao {
 	    return result;
 	}
 	
+	/**
+	 * Retrieve all sticky notes by a given id
+	 * @param uniqueKey
+	 * @return
+	 */
 	public List<StickyNote> retrieveStickyNotesByUniqueKey(String uniqueKey) {
 		List<StickyNote> stickyNotes = null;
 			try {
