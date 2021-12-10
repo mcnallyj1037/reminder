@@ -59,7 +59,7 @@ public class StickyNoteDao {
 	 * @return
 	 */
 	@Transactional
-	public int insertStickyNote(String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email) {
+	public int insertStickyNote(String uniqueKey, String title, String description, String reminderDate, String phone, String email) {
 		log.info("Entered insertStickyNote() StickyNoteDao.");
 		int result = 0;
 		int id = 0;
