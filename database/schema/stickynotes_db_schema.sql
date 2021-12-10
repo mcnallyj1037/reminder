@@ -22,7 +22,7 @@ CREATE TABLE STICKY_NOTES (
 
 INSERT INTO stickynotes_db.sticky_notes
 (id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED)
-VALUES ('1', 'AKEY123232', 'Hello to me', 'This is descr', '2021-12-09 12:00:00', '6039183678', '', '2021-12-09 12:00:00');
+VALUES ('3', 'AKEY123238', 'Go Team Wildcards again!', 'Wildcards have a great chance at winning FOR SURE!', '2021-12-09 8:00:00', '6039183678', '', '2021-12-07 12:00:00');
 
 SELECT * FROM STICKY_NOTES;
 
