@@ -20,48 +20,62 @@ public class ReminderPollingDao {
 	@Autowired
     private JdbcTemplate jdbcTemplate;
 	
-	//java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
-	private static final String insertIntoSticky = "INSERT INTO stickynotes_db.sticky_notes " + 
-			                                             "(id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED) " + 
-			                                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
-	private static final String selectStickyNotes = "SELECT id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED FROM stickynotes_db.sticky_notes";
+	private static final String selectStickyNotes = "SELECT id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED "
+			                                             + "FROM stickynotes_db.sticky_notes "
+			                                             + "WHERE REMINDER_DATE IS NOT NULL "
+			                                             + "AND REMINDER_DATE != '0000-00-00 00:00:00' "
+			                                             + "AND REMINDER_DATE <= ?";
+	
+	private static final String isStickyNoteExist = "SELECT COUNT(*) "
+			                                             + "FROM stickynotes_db.sticky_notes "
+			                                             + "WHERE UNIQUE_KEY = ?";
+	
+	private static final String updateReminderDateToEmpty = "UPDATE stickynotes_db.sticky_notes "
+			                                                     + "SET REMINDER_DATE = '0000-00-00 00:00:00' "
+			                                                     + "WHERE UNIQUE_KEY = ?";
 	
 	
-	 public List<StickyNote> retrieveAllStickyNotes() {
-	    	List<StickyNote> stickyNoteList = null;
-	    	try {
-	    		stickyNoteList = this.jdbcTemplate.query(selectStickyNotes, new StickyNoteMapper(), new Object[]{});
-	    		log.info("Successfully retrieved user from USERS table." + stickyNoteList.size());
-	    		
-	    	}catch(Exception e) {
-	    		log.info(e.getLocalizedMessage());
-	    	}
-	    	return stickyNoteList;
-	}
-	
-	/*
+	/**
+	 * Retrieve all sticky notes and return a list of StickyNote objects where reminder date is set and is less than current date/time.
+	 * @return
+	 */
 	@Transactional
-	public int insertStickyNote(int id, String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email, java.sql.Timestamp dateCreated) {
-		log.info("Entered insertStickyNote() ReminderPollingDao.");
-		int result = 0;
-		try {
-			int stripeDetailsRecCount = this.jdbcTemplate.queryForObject(getStripeDetailsRecCountQry, Integer.class);
-			if(stripeDetailsRecCount > 0) {
-				int maxStripeDetailsId = this.jdbcTemplate.queryForObject(insertIntoSticky, Integer.class);
-				result = this.jdbcTemplate.update(insertStripePaymentDetailsQry, maxStripeDetailsId +1, userId, stripeCustomerId, stripeProductId,
-						stripeSubscriptionId, stripePlanId, stripePriceId, stripeCouponUsed, stripeEmail, date, date);
-			}else {
-				result = this.jdbcTemplate.update(insertStripePaymentDetailsQry, 1, userId, stripeCustomerId, stripeProductId,
-						stripeSubscriptionId, stripePlanId, stripePriceId, stripeCouponUsed, stripeEmail, date, date);
-			}
-			log.info("Successfully saved Stripe Subscription Plan details.");
-				    
+	public List<StickyNote> retrieveAllStickyNotes(java.sql.Timestamp date) {
+		log.info("Entered retrieveAllStickyNotes() in ReminderPollingDao.");
+	    List<StickyNote> stickyNoteList = null;
+	    try {
+	    	stickyNoteList = this.jdbcTemplate.query(selectStickyNotes, new StickyNoteMapper(), new Object[]{date});
+	    	log.info("Successfully retrieved user from STICKY_NOTES table :" + stickyNoteList.size());
+	    		
 	    }catch(Exception e) {
-    	    log.info(e.getLocalizedMessage());
-    	    throw new ChContactException("Due to increased traffic, we were unable save Subscription plan details.  This is temporary.  Please try again later.");
-        }   	    
-	    return result;
+	    	log.info(e.getLocalizedMessage());
+	    }
+	    return stickyNoteList;
 	}
-	*/
+	
+	/**
+	 * Make the date/time field for "Reminder" in the STICKY_NOTES table empty.
+	 * @param uniqueKey
+	 * @return
+	 */
+	@Transactional
+	public int updateReminderToBeEmpty(String uniqueKey) {
+		log.info("Entered updateReminderToBeEmpty() in ReminderPollingDao.");
+		int result = 0;
+    	try {
+    		int isStickyNoteExizst = this.jdbcTemplate.queryForObject(isStickyNoteExist, Integer.class, uniqueKey);
+    		if(isStickyNoteExizst > 0) {
+    			result = this.jdbcTemplate.update(updateReminderDateToEmpty, new Object[]{uniqueKey});
+    		}
+    		
+    		log.info("Reminder updated to be empty: 1 = yes / 0 = no: " + result);
+    		
+    	}catch(Exception e) {
+    		log.info(e.getLocalizedMessage());
+    	}
+    	return result;
+	}
+	
+
 }

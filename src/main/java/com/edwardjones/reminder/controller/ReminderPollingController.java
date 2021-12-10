@@ -1,7 +1,5 @@
 package com.edwardjones.reminder.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +17,18 @@ public class ReminderPollingController {
 	ReminderPollingService reminderPollingService;
 	
 	/**
-	 * Polling controller to poll Mongo DB Reminder staging table and process SMS messaging for reminder funcationality.
-	 * @param session
+	 * Polling controller to poll STICKY_NOTE table and process SMS messaging for reminder functionality.
+	 * Needs to be executed on startup to run behind the scenes infinitely.
 	 */
 	@GetMapping("/poll-reminders")
-	public void pollReminders(HttpSession session) {
+	public void pollReminders() {
 		log.info("Inside pollReminders() controller.");
-		reminderPollingService.pollReminderStaging();
+		try {
+			reminderPollingService.pollStickyNoteTableForReminders();
+			
+		}catch(Exception e) {
+			log.info(e.getLocalizedMessage());
+		}
 	}
 	
 }
