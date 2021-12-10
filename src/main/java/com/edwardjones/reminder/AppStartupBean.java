@@ -22,6 +22,7 @@ public class AppStartupBean {
         	new Thread(() -> { 
         		try {
 				    reminderPollingService.pollStickyNoteTableForReminders();
+				    
 			} catch (InterruptedException e) {
 				log.info(e.getLocalizedMessage());
 			} }).start();

@@ -1,12 +1,12 @@
 /*
     Create DB SQL
 */
-CREATE DATABASE STICKYNOTES_DB;
+CREATE DATABASE STICKYNOTES_DB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 /*
     Create table SQL
 */
-CREATE TABLE STICKY_NOTES (
+CREATE TABLE stickynotes_db.STICKY_NOTES (
      id numeric(10) not null,
 	 UNIQUE_KEY varchar(50) not null,
 	 TITLE varchar(250) not null,
@@ -18,7 +18,7 @@ CREATE TABLE STICKY_NOTES (
      PRIMARY KEY (id)
 );
 
-SELECT * FROM STICKY_NOTES;
+SELECT * FROM stickynotes_db.STICKY_NOTES;
 
 /*
     Create Indexes on STICKY_NOTE table.
@@ -34,4 +34,8 @@ ON STICKY_NOTES (UNIQUE_KEY);
 */
 INSERT INTO stickynotes_db.sticky_notes
 (id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED)
-VALUES ('3', 'AKEY123238', 'Go Team Wildcards again!', 'Wildcards have a great chance at winning FOR SURE!', '2021-12-09 8:00:00', '6039183678', '', '2021-12-07 12:00:00');
+VALUES ('4', 'AKEY123239', 'Go Team Wildcards again!', 'Wildcards have a great chance at winning FOR SURE!', null, '6039183678', '', '2021-12-07 12:00:00');
+
+update stickynotes_db.sticky_notes
+SET REMINDER_DATE = '0000-00-00 00:00:00'
+WHERE id = 7;
