@@ -67,6 +67,7 @@ public class StickyNotesController {
 				String email
 			){
 		try {
+			log.info("Inside /stickynote/create endpoint controller.");
 		    stickyNotesService.createStickyNote(uniqueKey,title,description, reminderDate, phone, email);
 		    
 		} catch(Exception e) {
@@ -92,6 +93,7 @@ public class StickyNotesController {
 			) {
 		List<StickyNote> stickyNoteList = null;
 		try {
+			log.info("Inside /stickynote/retrieve/{uniqueKey} endpoint controller.");
 		    stickyNoteList = stickyNotesService.retrieveStickyNote(uniqueKey);
 		    
 		} catch(Exception e) {
@@ -113,6 +115,7 @@ public class StickyNotesController {
 				String stickyNoteId
 			) {
 		try {
+			log.info("Inside /stickynote/delete/{stickyNoteId} endpoint controller.");
 		    stickyNotesService.deleteStickyNote(stickyNoteId);
 		
 	    } catch(Exception e) {
