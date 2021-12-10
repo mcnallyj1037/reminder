@@ -42,12 +42,12 @@ public class ReminderPollingService {
              		    if(!StringUtils.isEmpty(stickyNoteList.get(i).getPhone())) {
              			    if(stickyNoteList.get(i).getPhone().startsWith("1")) {
              			    	log.info("Sending text now...");
-                 			    //smsResult = textMessagingService.sendTextMessage("+" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
-                 			    smsResult = true;
+                 			    smsResult = textMessagingService.sendTextMessage("+" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
+                 			    //smsResult = true;
                  		    }else {
                  		    	log.info("Sending text now...");
-                 			    //smsResult = textMessagingService.sendTextMessage("+1" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
-                 		    	smsResult = true;
+                 			    smsResult = textMessagingService.sendTextMessage("+1" + stickyNoteList.get(i).getPhone(), stickyNoteList.get(i).getTitle());
+                 		    	//smsResult = true;
                  		    }
              			    log.info("SMS has been sent: " + stickyNoteList.size());
              			
