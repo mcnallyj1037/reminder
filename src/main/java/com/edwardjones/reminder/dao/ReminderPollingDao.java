@@ -24,7 +24,7 @@ public class ReminderPollingDao {
 	private static final String selectStickyNotes = "SELECT id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED "
 			                                             + "FROM stickynotes_db.sticky_notes "
 			                                             + "WHERE REMINDER_DATE IS NOT NULL "
-			                                             + "OR REMINDER_DATE != '0000-00-00 00:00:00' "
+			                                             + "AND REMINDER_DATE != '0000-00-00 00:00:00' "
 			                                             + "AND REMINDER_DATE <= ?";
 	
 	private static final String isStickyNoteExist = "SELECT COUNT(*) "
