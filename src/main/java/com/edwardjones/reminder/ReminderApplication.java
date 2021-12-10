@@ -16,7 +16,7 @@ public class ReminderApplication {
 	
 	/**
 	 * App Startup Bean
-	 * @return
+	 * @return https://portal.azure.com/#@rc-jones.com/resource/subscriptions/e1ff64ae-d437-4ed9-bafa-4cb2846fb181/resourceGroups/wildcards/providers/Microsoft.Web/sites/codefest-stickynote-app/logStream
 	 */
 	@Bean(initMethod="init")
 	public AppStartupBean appStartupBean() {
