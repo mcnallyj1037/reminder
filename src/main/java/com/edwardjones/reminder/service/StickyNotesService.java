@@ -28,7 +28,7 @@ public class StickyNotesService {
 	 * @param phone
 	 * @param email
 	 */
-	public void createStickyNote(String uniqueKey, String title, String description, java.sql.Timestamp reminderDate, String phone, String email) {
+	public void createStickyNote(String uniqueKey, String title, String description, String reminderDate, String phone, String email) {
 		// TODO we need to generate the id query max id and add 1 to get new ID
 		Integer stickyNoteRecord = stickyNoteDao.insertStickyNote(uniqueKey,title,description, reminderDate, phone, email);
 		log.info("Service: Inserted stickyNoteRecord."+stickyNoteRecord);
