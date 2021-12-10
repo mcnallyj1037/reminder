@@ -71,11 +71,16 @@ public class StickyNoteDao {
 			} else{
 				id = 1;
 			}
+			
+			if (null == reminderDate) {
+				reminderDate = "0000-00-00 00:00:00";
+			}
+			
 			result = this.jdbcTemplate.update(insertIntoSticky,id,uniqueKey, title, description, reminderDate, phone, email, new java.sql.Timestamp(new java.util.Date().getTime()));
 			log.info("Successfully saved stickyNotes details.");
 				    
 	    }catch(Exception e) {
-    	    log.info(e.getLocalizedMessage());
+    	    log.error(e.getLocalizedMessage(), e);
     	}   	    
 	    return result;
 	}
