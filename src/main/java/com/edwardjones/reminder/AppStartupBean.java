@@ -19,10 +19,12 @@ public class AppStartupBean {
 	public void init() {
         log.info("Application started.  Initializing...");
         try {
-			reminderPollingService.pollStickyNoteTableForReminders();
-			
-		} catch (InterruptedException e) {
-			log.info(e.getLocalizedMessage());
+        	new Thread(() -> { 
+        		try {
+				    reminderPollingService.pollStickyNoteTableForReminders();
+			} catch (InterruptedException e) {
+				log.info(e.getLocalizedMessage());
+			} }).start();
 			
 		} catch(Exception e) {
 			log.info(e.getLocalizedMessage());
