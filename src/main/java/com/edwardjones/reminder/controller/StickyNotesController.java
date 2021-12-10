@@ -3,6 +3,8 @@ package com.edwardjones.reminder.controller;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,12 +20,13 @@ import com.edwardjones.reminder.service.StickyNotesService;
 @RestController
 public class StickyNotesController {
 	
+	private static Log log = LogFactory.getLog(StickyNotesController.class);
+	
 	@Autowired
 	StickyNotesService stickyNotesService;
 	
 	/**
-	 * Polling controller to poll Mongo DB Reminder staging table and process SMS messaging for reminder funcationality.
-	 * @param session
+	 * Create a single sticky note.
 	 */
 	@PutMapping("/stickynote/create")
 	public void createStickyNote(
@@ -63,9 +66,19 @@ public class StickyNotesController {
 				)
 				String email
 			){
-		stickyNotesService.createStickyNote(uniqueKey,title,description, reminderDate, phone, email);
+		try {
+		    stickyNotesService.createStickyNote(uniqueKey,title,description, reminderDate, phone, email);
+		    
+		} catch(Exception e) {
+			log.info(e.getLocalizedMessage());
+		}
 	}
 
+	/**
+	 * Retrieve all sticky notes by ID.
+	 * @param uniqueKey
+	 * @return
+	 */
 	@GetMapping(
 		path = "/stickynote/retrieve/{uniqueKey}",
 		produces = MediaType.APPLICATION_JSON_VALUE
@@ -77,9 +90,20 @@ public class StickyNotesController {
 				)
 				String uniqueKey
 			) {
-		return stickyNotesService.retrieveStickyNote(uniqueKey);
+		List<StickyNote> stickyNoteList = null;
+		try {
+		    stickyNoteList = stickyNotesService.retrieveStickyNote(uniqueKey);
+		    
+		} catch(Exception e) {
+			log.info(e.getLocalizedMessage());
+		}
+		return stickyNoteList;
 	}
 
+	/**
+	 * Delete a single sticky note controller.
+	 * @param stickyNoteId
+	 */
 	@DeleteMapping("/stickynote/delete/{stickyNoteId}")
 	public void deleteStickyNote(
 				@PathVariable(
@@ -88,7 +112,12 @@ public class StickyNotesController {
 				)
 				String stickyNoteId
 			) {
-		stickyNotesService.deleteStickyNote(stickyNoteId);
+		try {
+		    stickyNotesService.deleteStickyNote(stickyNoteId);
+		
+	    } catch(Exception e) {
+		    log.info(e.getLocalizedMessage());
+	    }
 	}
 	
 }

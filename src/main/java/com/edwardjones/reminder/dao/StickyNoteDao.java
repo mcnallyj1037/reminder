@@ -20,7 +20,6 @@ public class StickyNoteDao {
 	@Autowired
     private JdbcTemplate jdbcTemplate;
 	
-	//java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
 	private static final String insertIntoSticky = "INSERT INTO stickynotes_db.sticky_notes " + 
 			                                             "(id, UNIQUE_KEY, TITLE, DESCRIPTION, REMINDER_DATE, PHONE, EMAIL, DATE_CREATED) " + 
 			                                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -68,12 +67,11 @@ public class StickyNoteDao {
 			//
 			int selectStickyNoteMax =  this.jdbcTemplate.queryForObject(selectStickyNoteMaxId, Integer.class);
 			if (selectStickyNoteMax>0){
-			id = selectStickyNoteMax+1;
+			    id = selectStickyNoteMax+1;
 			} else{
-				id=1;
+				id = 1;
 			}
 			result = this.jdbcTemplate.update(insertIntoSticky,id,uniqueKey, title, description, reminderDate, phone, email, new java.sql.Timestamp(new java.util.Date().getTime()));
-			
 			log.info("Successfully saved stickyNotes details.");
 				    
 	    }catch(Exception e) {
@@ -94,7 +92,6 @@ public class StickyNoteDao {
 		try {
 			
 			result = this.jdbcTemplate.update(deleteStickyNotes ,stickyNoteId);
-			
 			log.info("Successfully deleted stickyNotes details.");
 				    
 	    }catch(Exception e) {
@@ -109,12 +106,13 @@ public class StickyNoteDao {
 	 * @return
 	 */
 	public List<StickyNote> retrieveStickyNotesByUniqueKey(String uniqueKey) {
+		log.info("Entered retrieveStickyNotesByUniqueKey() StickyNoteDao.");
 		List<StickyNote> stickyNotes = null;
 			try {
 				stickyNotes = this.jdbcTemplate.query(selectStickyNotesByUniqueKey, new StickyNoteMapper(), uniqueKey);
 				log.info("Successfully retrieved StickyNotes from sticky_notes table. " + stickyNotes.size() + " for uniqueKey: " + uniqueKey);
-	    	}
-			catch(Exception e) {
+	    	
+			} catch(Exception e) {
 				log.info(e.getLocalizedMessage());
 			}
 			return stickyNotes;
