@@ -52,7 +52,7 @@ public class StickyNotesController {
 					value = "reminderDate",
 					required = false
 				)
-				java.sql.Timestamp reminderDate,
+				String reminderDate,
 				
 				@RequestParam(
 					value = "phone",
