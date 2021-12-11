@@ -13,11 +13,12 @@ public class GlobalExceptionHandler {
 	
 	private static Log log = LogFactory.getLog(GlobalExceptionHandler.class);
 	
-	
+	/*
 	@ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(com.twilio.exception.ApiException.class)
     public void handleConflict() {
          log.info("Phone number not found.");
          
     }
+    */
 }
