@@ -67,7 +67,7 @@ public class StickyNoteDao {
 			//
 			int selectStickyNoteMax =  this.jdbcTemplate.queryForObject(selectStickyNoteMaxId, Integer.class);
 			if (selectStickyNoteMax>0){
-			    id = selectStickyNoteMax+1;
+			    id = selectStickyNoteMax +1;
 			} else{
 				id = 1;
 			}

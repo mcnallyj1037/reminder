@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import com.edwardjones.reminder.dao.ReminderPollingDao;
 import com.edwardjones.reminder.domain.StickyNote;
+import com.twilio.rest.lookups.v1.PhoneNumber;
 
 @Component
 public class ReminderPollingService {
@@ -40,16 +41,8 @@ public class ReminderPollingService {
          		for(int i = 0; i < stickyNoteList.size(); i++) {
              		try {
              		    if(!StringUtils.isEmpty(stickyNoteList.get(i).getPhone())) {
-             			    if(stickyNoteList.get(i).getPhone().startsWith("1")) {
-             			    	log.info("Sending text now...");
-                 			    smsResult = textMessagingService.sendTextMessage("+" + stickyNoteList.get(i).getPhone().replaceAll("\\s", ""), stickyNoteList.get(i).getTitle());
-                 			    //smsResult = true;
-                 		    }else {
-                 		    	log.info("Sending text now...");
-                 			    smsResult = textMessagingService.sendTextMessage("+1" + stickyNoteList.get(i).getPhone().replaceAll("\\s", ""), stickyNoteList.get(i).getTitle());
-                 		    	//smsResult = true;
-                 		    }
-             			    log.info("SMS has been sent: " + stickyNoteList.size());
+             		    	String formattedPhoneNumber = getFormattedPhoneNumber(stickyNoteList.get(i).getPhone());
+             		    	smsResult = validatePhoneAndSendSMS(formattedPhoneNumber, stickyNoteList.get(i).getUniqueKey(), stickyNoteList.get(i).getTitle());
              			
              		    }else if(!StringUtils.isEmpty(stickyNoteList.get(i).getEmail())){
              			    log.info("Sending email to: " + stickyNoteList.get(i).getEmail());
@@ -68,6 +61,55 @@ public class ReminderPollingService {
          	Thread.sleep(60000);
     	}
 	}
+    
+    /**
+     * Format the phone number for Twilio SMS messaging.
+     * @param phoneNumber
+     * @return
+     */
+    private String getFormattedPhoneNumber(String phoneNumber) {
+    	String phoneNumberPrefix = "";
+    	if(phoneNumber.startsWith("1")) {
+		    phoneNumberPrefix = "+";
+    	}else {
+    		phoneNumberPrefix = "+1";
+		}
+    	return phoneNumberPrefix + phoneNumber;
+    }
+    
+    /**
+     * Leverage Twilio Lookups API to determine if phone number exists. If exist, send text message.
+     * If it doesn't, an ApiException will be thrown immediately and caught with ControllerAdvice Global Exception handler.
+     * If number not found, update STICY_NOTES table 'REMINDER_DATE' column to '0000-00-00 00:00:00'
+     * @param lookupPhoneNumber
+     * @throws com.twilio.exception.ApiException
+     */
+    private boolean validatePhoneAndSendSMS(String lookupPhoneNumber, String uniqueKey, String SmsMessage) throws com.twilio.exception.ApiException{
+    	log.info("Looking up phone number...");
+    	boolean smsResult = false;
+    	try {
+    		PhoneNumber number = PhoneNumber
+	               .fetcher(new com.twilio.type.PhoneNumber(lookupPhoneNumber))
+	               .fetch();
+    	    
+    	    log.info("Phone Country Code: " + number.getCountryCode() + 
+		    			", Caller Info: " + number.getCallerName().toString() + 
+		    			", Carrier Info: " + number.getCarrier().toString());
+    	    
+    	    smsResult = textMessagingService.sendTextMessage(lookupPhoneNumber, SmsMessage);
+    	    
+    	} catch(com.twilio.exception.ApiException e) {
+            if(e.getStatusCode() == 404) {
+                log.info("Phone number not found.");
+                reminderPollingDao.updateReminderToBeEmpty(uniqueKey);
+
+            } else {
+                log.info(e.getLocalizedMessage());
+                reminderPollingDao.updateReminderToBeEmpty(uniqueKey);
+            }
+        }
+    	return smsResult;
+    }
     
     
 }
