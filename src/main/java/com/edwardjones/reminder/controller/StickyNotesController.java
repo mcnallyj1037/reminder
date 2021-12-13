@@ -10,8 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edwardjones.reminder.domain.StickyNote;
@@ -31,6 +34,32 @@ public class StickyNotesController {
 	
 	@Autowired
 	StickyNotesService stickyNotesService;
+	
+	@PostMapping("/stickynote/saveNewStickyNote")
+    @Operation(summary = "Save a new sticky note", description = "Saves a new sticky note")
+    @ApiResponses(value = {
+    		@ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "403", description = "Access Denied"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Error")})
+	public void saveNewStickyNote(@RequestBody StickyNote stickyNote) {
+		try {
+			log.info("Inside /stickynote/create endpoint controller.");
+			log.info("uniqueKey: " + stickyNote.getUniqueKey());
+			log.info("title: " + stickyNote.getTitle());
+			log.info("description: " + stickyNote.getDescription());
+			log.info("reminderDate: " + stickyNote.getReminderDate());
+			log.info("phone: " + stickyNote.getPhone());
+			log.info("email: " + stickyNote.getEmail());
+			
+		    stickyNotesService.createStickyNote(stickyNote.getUniqueKey(), stickyNote.getTitle(), 
+		    		stickyNote.getDescription(), stickyNote.getReminderDate(), stickyNote.getPhone(), stickyNote.getEmail());
+		    
+		}catch(Exception e) {
+			log.info(e.getLocalizedMessage());
+		}
+	}
 	
 	/**
 	 * Create a single sticky note.

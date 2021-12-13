@@ -1,14 +1,38 @@
 package com.edwardjones.reminder.domain;
 
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class StickyNote {
 
+	
 	private int id;
+	
+	@JsonProperty(value="uniqueKey", required = true)
+    @NotNull(message="Please provide a valid uniqueKey")
 	private String uniqueKey;
+	
+	@JsonProperty(value="title", required = false)
+    @NotNull(message="Please provide a valid title")
 	private String title;
+	
+	@JsonProperty(value="description", required = false)
+    @NotNull(message="Please provide a valid description")
 	private String description;
+	
+	@JsonProperty(value="reminderDate", required = false)
+    @NotNull(message="Please provide a valid reminderDate")
 	private String reminderDate;
+	
+	@JsonProperty(value="phone", required = false)
+    @NotNull(message="Please provide a valid phone")
 	private String phone;
+	
+	@JsonProperty(value="email", required = false)
+    @NotNull(message="Please provide a valid email")
 	private String email;  
+	
 	private String dateCreated;
 	
 	public StickyNote() {}

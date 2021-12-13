@@ -16,6 +16,8 @@ import com.twilio.rest.lookups.v1.PhoneNumber;
 @Component
 public class ReminderPollingService {
 
+	
+	
 	private static Log log = LogFactory.getLog(ReminderPollingService.class);
 	
 	@Autowired
